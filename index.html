@@ -333,9 +333,11 @@ box-shadow:0 0 15px rgba(255,105,160,0.6);
 object-fit:cover;
 }
 
+/* LOVE LETTER - SCROLLABLE */
+
 .letter-box{
 background:linear-gradient(180deg,#1a000d,#000);
-padding:22px 18px;
+padding:20px 18px;
 border-radius:18px;
 border:2px solid #ff6fa5;
 max-width:420px;
@@ -343,8 +345,27 @@ width:90%;
 box-shadow:0 0 25px rgba(255,105,160,0.6);
 font-family:"Georgia","Times New Roman",serif;
 margin:auto;
-overflow-wrap:break-word;
+
+/* SCROLL SETTINGS */
+max-height:70vh;
+overflow-y:auto;
+scroll-behavior:smooth;
+
 word-wrap:break-word;
+}
+
+/* Scrollbar (Optional - Looks Nice) */
+.letter-box::-webkit-scrollbar{
+width:6px;
+}
+
+.letter-box::-webkit-scrollbar-thumb{
+background:#ff6fa5;
+border-radius:10px;
+}
+
+.letter-box::-webkit-scrollbar-track{
+background:rgba(255,255,255,0.1);
 }
 
 .letter-box p{
@@ -352,7 +373,6 @@ line-height:1.7;
 font-size:14.5px;
 color:#ffe6f0;
 text-align:left;
-word-break:break-word;
 }
 
 @media(max-width:360px){
