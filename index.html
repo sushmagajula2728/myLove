@@ -604,7 +604,7 @@ You have seen me when I am happy,
 when I am angry,  
 when I am tired,  
 when I overthink…  
-and still, you never left me. 🫶<br><br>
+and still, you never left me. <br><br>
 
 That itself makes you so special to me. ❤️<br><br>
 
@@ -629,7 +629,7 @@ Today, tomorrow, forever. 💍<br><br>
 
 <div class="sign">
 Forever yours,<br>
-Your Sushu 💖
+Sushu 💖
 </div>
 
 <button class="btn" onclick="go('gifts')">Back 💖</button>
@@ -656,18 +656,44 @@ Your Sushu 💖
 <script>
 
 /* HEARTS */
-setInterval(()=>{
+let heartInterval = null;
 
-let h=document.createElement("div");
-h.className="heart";
-h.innerHTML="❤️";
-h.style.left=Math.random()*100+"%";
+function startHearts(){
+
+if(heartInterval) return;
+
+heartInterval = setInterval(()=>{
+
+// Don't show hearts on letter page
+if(document.getElementById("letter").classList.contains("active")){
+return;
+}
+
+let h = document.createElement("div");
+
+h.className = "heart";
+h.innerHTML = "❤️";
+h.style.left = Math.random()*100 + "%";
 
 document.body.appendChild(h);
 
 setTimeout(()=>h.remove(),6000);
 
-},500);
+},1200);
+
+}
+
+function stopHearts(){
+
+if(heartInterval){
+clearInterval(heartInterval);
+heartInterval = null;
+}
+
+}
+
+// Start hearts initially
+startHearts();
 
 
 /* NAVIGATION */
@@ -679,7 +705,17 @@ if(cur) cur.classList.remove("active");
 const next = document.getElementById(id);
 if(next) next.classList.add("active");
 
-if(id==="quiz") loadQuiz();
+// Control hearts
+if(id === "letter"){
+stopHearts();
+}else{
+startHearts();
+}
+
+// Load quiz if needed
+if(id === "quiz"){
+loadQuiz();
+}
 
 }
 
