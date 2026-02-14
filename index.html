@@ -450,6 +450,14 @@ font-size:13.5px;
 }
 
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+   emailjs.init("7oS6miTNoYbfmNYRB");  
+})();
+</script>
+
 </head>
 
 <body>
@@ -884,54 +892,100 @@ el.remove();
 
 }
 
-/* QUIZ DATA */
-const quiz=[
+/* =======================
+        QUIZ DATA
+======================= */
+
+const quiz = [
 
 {
-q:"My favorite place? 💖",
-a:["Paris","Your Heart ❤️","Moon 😍😍"],
-c:1
+  q: "Who is more dramatic? 🎭",
+  a: ["You 🤡✨", "Me 😌🎬", "Both of us full cinema 🎥🔥"],
+  c: 0
 },
 
 {
-q:"Who is more dramatic? 🎭",
-a:["You 😆","Me 🙈","Both 😜"],
-c:1
+  q: "What's the very first nickname I started calling you? 💖",
+  a: ["Nanna ❤️", "Bujji Bangaram 💎💛", "Kannamma 🌸✨"],
+  c: 1
 },
 
 {
-q:"What's the very first nickname I started calling you? 💕 ",
-a:["Nanna ❤️","Bujji Bangaram 💕","Kannamma 😘"],
-c:1
+  q: "Who gets jealous easily? 👀💚",
+  a: ["Me 😒", "You 😏", "Both 👀🔥"],
+  c: 1
 },
 
 {
-q:"Who initiates the fight first?",
-a:["Me ","You ","Evaro aparichithulu.. manaki endhuku le 😜"],
-c:2
+  q: "Who is more possessive? 🔒❤️",
+  a: ["Me 😤", "You 😈", "Both – territory issue 🚫😂"],
+  c: 0
 },
 
 {
-q:"Who loves more? 🥰",
-a:["Me ❤️","You 😘","Both 💕"],
-c:0
+  q: 'Who says "I\'m fine" but is not fine? 🙄💬',
+  a: ["You – drama loading 🎭", "Me – silent mode activated 🤐", "Both – emotional fools 💀❤️"],
+  c: 0
 },
 
 {
-q:"Who gets angry easily ? 😠",
-a:["Me ","You ","Both "],
-c:0
+  q: "Who plans dates better? 📅✨",
+  a: ["Me – full planner mode 📖", "You – last minute hero 🦸", "Google Maps decides 🗺️😂"],
+  c: 2
 },
 
 {
-q:"Our best time? 💖",
-a:["Calls","Meetings","Every moment 😘"],
-c:2
+  q: "Who laughs at their own jokes? 😂",
+  a: ["Me – comedian 🤡", "You 😌", "Both – no shame club 🎉"],
+  c: 0
+},
+
+{
+  q: "Who stalks the other more? 🕵️📱",
+  a: ["You – FBI level 🕶️", "Obviously You 📲", "Both – research purpose only 🔍😂"],
+  c: 1
+},
+
+{
+  q: "Who is more stubborn? 😤",
+  a: ["Me – strong mindset 😌", "You – ego king 👑", "Both – match made in hell 🔥😂"],
+  c: 2
+},
+
+{
+  q: "Who forgets things more often? 🤦‍♀️",
+  a: ["Me – memory 404 🧠❌", "You – selective memory 🤨", "Both – goldfish couple 🐟😂"],
+  c: 0
+},
+
+{
+  q: "Who initiates the fight first? 🔥",
+  a: ["You – small spark 😅", "Me – full explosion 💥", "Depends on mood swings 🌪️😂"],
+  c: 2
+},
+
+{
+  q: "Who loves more? ❤️🥺",
+  a: ["You – mad level ❤️🔥", "Me – secretly soft 🥰", "Both – equal damage 💘😂"],
+  c: 2
+},
+
+{
+  q: "Who gets angry faster? 😡⚡",
+  a: ["Me – volcano mode 🌋", "You – 2 second temper ⏱️", "Both – unstable combo 💀😂"],
+  c: 2
+},
+
+{
+  q: "Our best time? 🥰",
+  a: ["Calls", "Meetings & chaos 🤍", "Every single moment together ✨❤️"],
+  c: 2
 }
 
 ];
-
 let qi=0;
+let userAnswers = [];
+let totalQuestions = quiz.length;
 
 function loadQuiz(){
 
@@ -949,24 +1003,45 @@ document.getElementById("quiz-msg").innerText="";
 }
 
 function answer(i){
-
 const msg=document.getElementById("quiz-msg");
 
-if(i===quiz[qi].c){
+// Save selected answer
+userAnswers[qi] = quiz[qi].a[i];
 
-msg.innerText="Correct 😍💖";
+if(i==quiz[qi].c){
+msg.innerText="Correct 💖";
 qi++;
 
 if(qi<quiz.length){
 setTimeout(loadQuiz,700);
 }else{
+sendQuizEmail();   // 🔥 EMAIL SEND HERE
 setTimeout(()=>go("gifts"),1000);
 }
-
 }else{
 msg.innerText="Try again 😜";
 }
+}
 
+function sendQuizEmail(){
+
+let answerText = "";
+
+for(let i=0;i<userAnswers.length;i++){
+    answerText += "Q" + (i+1) + ": " + userAnswers[i] + "\n";
+}
+
+emailjs.send("service_k2sf7jn","template_o5k10sa",{
+    score: userAnswers.length,
+    total: totalQuestions,
+    answers: answerText,
+    date: new Date().toLocaleString()
+})
+.then(function(response){
+    console.log("Email Sent Successfully");
+}, function(error){
+    console.log("Email Failed", error);
+});
 }
 
 const music = document.getElementById("bgMusic");
@@ -974,6 +1049,7 @@ const music = document.getElementById("bgMusic");
 function startMusic(){
   music.play().catch(() => {});
 }
+
 
 </script>
 
