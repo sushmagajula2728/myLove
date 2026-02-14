@@ -387,11 +387,78 @@ font-size:13.5px;
 
 }
 
+/* LOVE PAGE ONLY */
+.love-bg{
+  background: linear-gradient(
+                rgba(255,192,203,0.35),
+                rgba(255,182,193,0.35)
+              ),
+              url('him.jpeg') center/cover no-repeat;
+  position: relative;
+}
+
+/* Remove old box look */
+.love-content{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  text-align:center;
+  width:90%;
+  color:white;
+}
+
+/* Remove glow box effect */
+.love-box{
+  background:none !important;
+  border:none !important;
+  box-shadow:none !important;
+}
+
+.valentine-title{
+  font-size:42px;
+  font-weight:700;
+  color:white;
+  letter-spacing:1px;
+
+  text-shadow:
+      0 0 15px rgba(255,0,100,0.8),
+      0 0 30px rgba(255,0,100,0.6),
+      2px 2px 10px rgba(0,0,0,0.7);
+}
+
+.baby-name{
+  font-size:30px;
+  color:white;
+  margin-top:10px;
+  text-shadow: 0 0 10px rgba(255,0,100,0.7);
+  animation: glowPulse 2s infinite alternate;
+}
+
+@keyframes glowPulse{
+  from{
+    text-shadow: 0 0 10px rgba(255,0,100,0.6);
+  }
+  to{
+    text-shadow: 0 0 25px rgba(255,0,100,1);
+  }
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(-20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
 </style>
 </head>
 
 <body>
 
+<!-- Background Music -->
+
+<audio id="bgMusic" loop>
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
 
 <!-- INTRO -->
 <div class="page active" id="intro">
@@ -480,17 +547,22 @@ Unlock →
 
 
 <!-- LOVE -->
-<div class="page" id="love">
+<div class="page love-bg" id="love">
 
-<div class="love-box">
+<div class="love-content">
 
-<h3>💐 Happy Valentine’s Day 💐</h3>
+<h1 class="valentine-title">
+  Happy Valentine’s Day
+</h1>
 
-<h2 style="color:pink">Babyyy ❤️</h2>
+<h2 class="baby-name">
+   Babyyy ❤️
+</h2>
+
 
 <button class="btn" onclick="shower()">Shower More Love💕</button>
-
-<p style="margin:15px 0;font-style:italic;">
+<br><br>
+<p class="love-text">
 "My heart beats only for you."<br>
 Every moment is special with my lovely idiot ❤️
 </p>
@@ -750,6 +822,7 @@ const msg=document.getElementById("msg");
 if(code==="2728"){   // CHANGE PASSWORD
 
 msg.innerText="Unlocked 😍";
+startMusic();
 setTimeout(()=>go("proposal"),600);
 
 }else{
@@ -827,8 +900,8 @@ c:1
 },
 
 {
-q:"What nick name did I gave you? 😍 TOUGHEST!! I know 😂",
-a:["Nanna ","Bujji Bangaram 💕","Kannamma 😘"],
+q:"What's the very first nickname I started calling you? 💕 ",
+a:["Nanna ❤️","Bujji Bangaram 💕","Kannamma 😘"],
 c:1
 },
 
@@ -845,6 +918,12 @@ c:0
 },
 
 {
+q:"Who gets angry easily ? 😠",
+a:["Me ","You ","Both "],
+c:0
+},
+
+{
 q:"Our best time? 💖",
 a:["Calls","Meetings","Every moment 😘"],
 c:2
@@ -857,7 +936,7 @@ let qi=0;
 function loadQuiz(){
 
 document.getElementById("progress").innerText=
-"Question "+(qi+1)+" / "+quiz.length;
+"Question "+(qi+1)+" / "+(quiz.length+1);
 
 document.getElementById("q").innerText=quiz[qi].q;
 
@@ -888,6 +967,12 @@ setTimeout(()=>go("gifts"),1000);
 msg.innerText="Try again 😜";
 }
 
+}
+
+const music = document.getElementById("bgMusic");
+
+function startMusic(){
+  music.play().catch(() => {});
 }
 
 </script>
