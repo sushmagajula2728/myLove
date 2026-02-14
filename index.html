@@ -794,6 +794,9 @@ startHearts();
 
 // Load quiz if needed
 if(id === "quiz"){
+qi = 0;
+score = 0;
+userAnswers = [];
 loadQuiz();
 }
 
@@ -898,11 +901,6 @@ el.remove();
 
 const quiz = [
 
-{
-  q: "Who is more dramatic? 🎭",
-  a: ["You 🤡✨", "Me 😌🎬", "Both of us full cinema 🎥🔥"],
-  c: 0
-},
 
 {
   q: "What's the very first nickname I started calling you? 💖",
@@ -925,7 +923,7 @@ const quiz = [
 {
   q: 'Who says "I\'m fine" but is not fine? 🙄💬',
   a: ["You – drama loading 🎭", "Me – silent mode activated 🤐", "Both – emotional fools 💀❤️"],
-  c: 0
+  c: 1
 },
 
 {
@@ -974,12 +972,6 @@ const quiz = [
   q: "Who gets angry faster? 😡⚡",
   a: ["Me – volcano mode 🌋", "You – 2 second temper ⏱️", "Both – unstable combo 💀😂"],
   c: 2
-},
-
-{
-  q: "Our best time? 🥰",
-  a: ["Calls", "Meetings & chaos 🤍", "Every single moment together ✨❤️"],
-  c: 2
 }
 
 ];
@@ -990,7 +982,7 @@ let totalQuestions = quiz.length;
 function loadQuiz(){
 
 document.getElementById("progress").innerText=
-"Question "+(qi+1)+" / "+(quiz.length+1);
+"Question "+(qi+1)+" / "+(quiz.length);
 
 document.getElementById("q").innerText=quiz[qi].q;
 
@@ -1003,24 +995,56 @@ document.getElementById("quiz-msg").innerText="";
 }
 
 function answer(i){
-const msg=document.getElementById("quiz-msg");
 
-// Save selected answer
+const msg = document.getElementById("quiz-msg");
+
+let correctIndex = quiz[qi].c;
+let correctAnswer = quiz[qi].a[correctIndex];
+
+// Save answer
 userAnswers[qi] = quiz[qi].a[i];
 
-if(i==quiz[qi].c){
-msg.innerText="Correct 💖";
+// Increase score if correct
+if(i == correctIndex){
+    score++;
+    msg.innerText = "Correct 💖";
+}else{
+    msg.innerText = "Oops 😜 Correct answer: " + correctAnswer;
+}
+
+// Move next
 qi++;
 
-if(qi<quiz.length){
-setTimeout(loadQuiz,700);
+if(qi < quiz.length){
+    setTimeout(loadQuiz, 1500);
 }else{
-sendQuizEmail();   // 🔥 EMAIL SEND HERE
-setTimeout(()=>go("gifts"),1000);
+    setTimeout(showResult,1500);
 }
+}
+
+function showResult(){
+
+let message = "";
+
+if(score == quiz.length){
+    message = "Perfect Score 😍 You know us too well 💍";
+}else if(score >= quiz.length * 0.7){
+    message = "Awwww 🥰 You know us pretty well ❤️";
 }else{
-msg.innerText="Try again 😜";
+    message = "Hmmmm 😏 Looks like we need more dates 😂";
 }
+
+document.getElementById("quiz").innerHTML = `
+<div class="quiz-card">
+    <h2>Your Love Score 💘</h2>
+    <h1 style="margin:15px 0;">${score} / ${quiz.length}</h1>
+    <p>${message}</p>
+    <br>
+    <button class="btn" onclick="go('gifts')">Back to Gifts 💖</button>
+</div>
+`;
+
+sendQuizEmail();   // still send email to you
 }
 
 function sendQuizEmail(){
@@ -1032,7 +1056,7 @@ for(let i=0;i<userAnswers.length;i++){
 }
 
 emailjs.send("service_k2sf7jn","template_o5k10sa",{
-    score: userAnswers.length,
+    score: score,
     total: totalQuestions,
     answers: answerText,
     date: new Date().toLocaleString()
